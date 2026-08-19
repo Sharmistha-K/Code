@@ -1,0 +1,38 @@
+"""
+Average Post Hiatus (Part 1)
+Facebook SQL Interview Question
+Question
+Solution
+Discussion
+Submissions
+Given a table of Facebook posts, for each user who posted at least twice in 2021, write a query to find the number of days between each user’s first post of the year and last post of the year in the year 2021. Output the user and number of the days between each user's first and last post.
+
+p.s. If you've read the Ace the Data Science Interview and liked it, consider writing us a review?
+
+posts Table:
+Column Name	Type
+user_id	integer
+post_id	integer
+post_content	text
+post_date	timestamp
+posts Example Input:
+user_id	post_id	post_content	post_date
+151652	599415	Need a hug	07/10/2021 12:00:00
+661093	624356	Bed. Class 8-12. Work 12-3. Gym 3-5 or 6. Then class 6-10. Another day that's gonna fly by. I miss my girlfriend	07/29/2021 13:00:00
+004239	784254	Happy 4th of July!	07/04/2021 11:00:00
+661093	442560	Just going to cry myself to sleep after watching Marley and Me.	07/08/2021 14:00:00
+151652	111766	I'm so done with covid - need travelling ASAP!	07/12/2021 19:00:00
+Example Output:
+user_id	days_between
+151652	2
+661093	21
+The dataset you are querying against may have different input & output - this is just an example!
+"""
+
+-- Funny thing that the min n max from same col worked here
+-- If I directly sub 2 dates it gives different values then when we sub max -min of dates??
+SELECT user_id, EXTRACT(DAYS FROM(MAX(POST_DATE)-MIN(POST_DATE))) AS days_between FROM posts
+WHERE EXTRACT(YEAR FROM POST_DATE)='2021'
+GROUP BY 1
+HAVING COUNT(user_id)>=2
+ORDER BY 2 ;
